@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="IA_FINAL_PROJECT" id="Project-948" database="LogicalDesign" >
+	<schema name="INSTANCE" catalogname="IA_FINAL_PROJECT" >
+		<table name="date_dim" prior="DATE_DIM" >
+			<column name="sk_date" prior="sk_date_id" type="INT" jt="4" mandatory="y" />
+			<column name="date_id" type="INT" jt="4" mandatory="y" >
+				<comment><![CDATA[Primary Key for Date Dimension]]></comment>
+			</column>
+			<column name="date" type="DATE" jt="91" />
+			<column name="year" type="INT" jt="4" />
+			<column name="month" type="INT" jt="4" />
+			<column name="day" type="INT" jt="4" />
+			<column name="hour" type="INT" jt="4" />
+			<column name="minute" type="INT" jt="4" />
+			<column name="second" type="INT" jt="4" />
+			<index name="pk_date_dim" unique="PRIMARY_KEY" >
+				<column name="sk_date" />
+			</index>
+		</table>
+		<table name="fact" prior="entity" >
+			<column name="sk_date" prior="sk_rate_code" type="INT" jt="4" mandatory="y" />
+			<column name="sk_rate_code" type="INT" jt="4" mandatory="y" />
+			<column name="sk_payment_type" type="INT" jt="4" mandatory="y" />
+			<column name="sk_trip_type" type="INT" jt="4" mandatory="y" />
+			<column name="sk_weather" type="INT" jt="4" mandatory="y" />
+			<column name="sk_location" type="INT" jt="4" mandatory="y" />
+			<column name="sk_passenger" type="INT" jt="4" mandatory="y" />
+			<column name="trip_distance" type="DECIMAL" jt="3" />
+			<column name="fare_amount" type="DECIMAL" jt="3" />
+			<column name="tip_amount" type="DECIMAL" jt="3" />
+			<column name="extra_amount" type="DECIMAL" jt="3" />
+			<column name="mta_tax" type="DECIMAL" jt="3" />
+			<column name="improvement_surcharge" type="DECIMAL" jt="3" />
+			<column name="tolls_amount" type="DECIMAL" jt="3" />
+			<column name="total_amount" type="DECIMAL" jt="3" />
+			<column name="congestion_surcharge" type="DECIMAL" jt="3" />
+			<index name="unq_sk_date" unique="UNIQUE_INDEX" >
+				<column name="sk_date" />
+			</index>
+			<index name="unq_sk_rate_code" unique="UNIQUE_INDEX" >
+				<column name="sk_rate_code" />
+			</index>
+			<index name="unq_sk_weather" unique="UNIQUE_INDEX" >
+				<column name="sk_weather" />
+			</index>
+			<index name="unq_sk_payment_type" unique="UNIQUE_INDEX" >
+				<column name="sk_payment_type" />
+			</index>
+			<index name="unq_sk_location" unique="UNIQUE_INDEX" >
+				<column name="sk_location" />
+			</index>
+			<index name="unq_sk_trip_type" unique="UNIQUE_INDEX" >
+				<column name="sk_trip_type" />
+			</index>
+			<index name="pk_fact" unique="PRIMARY_KEY" >
+				<column name="sk_date" />
+				<column name="sk_rate_code" />
+				<column name="sk_payment_type" />
+				<column name="sk_trip_type" />
+				<column name="sk_weather" />
+				<column name="sk_location" />
+				<column name="sk_passenger" />
+			</index>
+			<fk name="fk_fact_date_dim" virtual="y" to_schema="IA_FINAL_PROJECT.INSTANCE" to_table="date_dim" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="sk_date" pk="sk_date" />
+			</fk>
+			<fk name="fk_fact_rate_code_dim" virtual="y" to_schema="IA_FINAL_PROJECT.INSTANCE" to_table="rate_code_dim" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="sk_rate_code" pk="sk_rate_code" />
+			</fk>
+			<fk name="fk_fact_payment_type_dim" virtual="y" to_schema="IA_FINAL_PROJECT.INSTANCE" to_table="payment_type_dim" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="sk_payment_type" pk="sk_payment_type" />
+			</fk>
+			<fk name="fk_fact_trip_type_dim" virtual="y" to_schema="IA_FINAL_PROJECT.INSTANCE" to_table="trip_type_dim" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="sk_trip_type" pk="sk_trip_type" />
+			</fk>
+			<fk name="fk_fact_weather_dim" virtual="y" to_schema="IA_FINAL_PROJECT.INSTANCE" to_table="weather_dim" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="sk_weather" pk="sk_weather" />
+			</fk>
+			<fk name="fk_fact_location_id" virtual="y" to_schema="IA_FINAL_PROJECT.INSTANCE" to_table="location_id" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="sk_location" pk="sk_location" />
+			</fk>
+			<fk name="fk_fact_passenger_dim" virtual="y" to_schema="IA_FINAL_PROJECT.INSTANCE" to_table="passenger_dim" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="sk_passenger" pk="sk_passenger" />
+			</fk>
+		</table>
+		<table name="location_id" prior="entity" >
+			<column name="sk_location" type="INT" jt="4" mandatory="y" />
+			<column name="location_id" prior="location_name" type="INT" jt="4" mandatory="y" />
+			<column name="location_name" type="VARCHAR" length="100" jt="12" />
+			<column name="latitude" type="DECIMAL" jt="3" />
+			<column name="longitude" type="DECIMAL" jt="3" />
+			<index name="pk_location_id" unique="PRIMARY_KEY" >
+				<column name="sk_location" />
+			</index>
+		</table>
+		<table name="passenger_dim" prior="entity" >
+			<column name="sk_passenger" type="INT" jt="4" mandatory="y" />
+			<column name="passenger_count" type="INT" jt="4" mandatory="y" />
+			<index name="pk_passenger_dim" unique="PRIMARY_KEY" >
+				<column name="sk_passenger" />
+			</index>
+		</table>
+		<table name="payment_type_dim" prior="payment_type" >
+			<column name="sk_payment_type" prior="sk_payment" type="INT" jt="4" mandatory="y" />
+			<column name="payment_type_id" type="INT" jt="4" mandatory="y" />
+			<column name="payment_type" type="CHAR" length="10" jt="1" />
+			<index name="pk_payment_type_dim" unique="PRIMARY_KEY" >
+				<column name="sk_payment_type" />
+			</index>
+		</table>
+		<table name="rate_code_dim" prior="taxi_zone_dim" >
+			<column name="sk_rate_code" type="INT" jt="4" mandatory="y" />
+			<column name="rate_code_id" prior="taxi_zone_id" type="INT" jt="4" mandatory="y" />
+			<column name="rate_code" type="CHAR" length="10" jt="1" />
+			<index name="pk_rate_code_dim" unique="PRIMARY_KEY" >
+				<column name="sk_rate_code" />
+			</index>
+		</table>
+		<table name="trip_type_dim" prior="entity" >
+			<column name="sk_trip_type" prior="sk_trip" type="INT" jt="4" mandatory="y" />
+			<column name="trip_type_id" type="INT" jt="4" mandatory="y" />
+			<column name="trip_type" type="CHAR" length="10" jt="1" />
+			<index name="pk_trip_type_dim" unique="PRIMARY_KEY" >
+				<column name="sk_trip_type" />
+			</index>
+		</table>
+		<table name="weather_dim" prior="entity" >
+			<column name="sk_weather" type="INT" jt="4" mandatory="y" />
+			<column name="weather_id" type="INT" jt="4" mandatory="y" />
+			<column name="weather_recorded_date" type="DATE" jt="91" />
+			<column name="temp" type="DECIMAL" jt="3" />
+			<column name="feelslike" type="DECIMAL" jt="3" />
+			<column name="dew" type="DECIMAL" jt="3" />
+			<column name="humid" type="DECIMAL" jt="3" />
+			<column name="precip" type="DECIMAL" jt="3" />
+			<column name="snow" type="DECIMAL" jt="3" />
+			<column name="windspeed" type="DECIMAL" jt="3" />
+			<column name="conditions" type="CHAR" length="100" jt="1" />
+			<column name="icon" type="CHAR" length="100" jt="1" />
+			<index name="pk_weather_dim" unique="PRIMARY_KEY" >
+				<column name="sk_weather" />
+			</index>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-1be7" show_relation="columns" >
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="date_dim" color="C1D8EE" x="240" y="192" />
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="fact" color="C1D8EE" x="448" y="352" />
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="location_id" color="C1D8EE" x="128" y="608" />
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="passenger_dim" color="C1D8EE" x="416" y="752" />
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="payment_type_dim" color="C1D8EE" x="704" y="640" />
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="rate_code_dim" color="C1D8EE" x="656" y="160" />
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="trip_type_dim" color="C1D8EE" x="112" y="384" />
+		<entity schema="IA_FINAL_PROJECT.INSTANCE" name="weather_dim" color="C1D8EE" x="816" y="320" />
+		<callout x="48" y="48" pointer="Round" >
+			<comment><![CDATA[This is a layout - a diagram with tools.
+- Create new entities by right-clicking the layout. 
+- Double-click entity headers to edit.
+- For a better understanding of the schema, create multiple layouts.
+- Deploy the model into the database by converting it first to the physical design.]]></comment>
+		</callout>
+	</layout>
+</project>
